@@ -1,0 +1,1165 @@
+/*
+ * Site público nordit — design aprovado, direção 1b "Moderno & Acessível" (Teal & Marinho,
+ * Poppins · DM Sans). Portado de src/assets/styles/main.css e dos <style scoped> do projeto Vue.
+ * Carregado depois do Bootstrap: os tokens --bs-* abaixo alinham os componentes do Bootstrap
+ * (dropdown, collapse) ao design. Classes próprias usam nomes que não colidem com o Bootstrap
+ * (.site-container em vez de .container, .site-nav em vez de .navbar, .nd-btn em vez de .btn).
+ */
+
+/* ---------- Design tokens ---------- */
+:root {
+  --color-navy: #0f2e4d;
+  --color-teal: #159b86;
+  --color-teal-dark: #0f7a6a;
+  --color-mint: #e4f3ef;
+  --color-mint-soft: #eef7f4;
+  --color-page: #f4faf8;
+  --color-illustration: #e9f4f1;
+  --color-text: #4a5b63;
+  --color-text-soft: #5b6b72;
+  --color-text-muted: #6a7a82;
+  --color-cta-text: #c3d2dc;
+  --color-error: #cf4e4e;
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  --radius-card: 18px;
+  --radius-pill: 999px;
+
+  --shadow-nav: 0 4px 16px rgba(15, 46, 77, 0.06);
+  --shadow-card: 0 6px 20px rgba(15, 46, 77, 0.06);
+  --shadow-menu: 0 24px 54px rgba(15, 46, 77, 0.2);
+
+  /* Bootstrap alinhado aos tokens */
+  --bs-body-font-family: var(--font-body);
+  --bs-body-color: var(--color-text);
+  --bs-body-bg: var(--color-page);
+  --bs-primary: #159b86;
+  --bs-primary-rgb: 21, 155, 134;
+  --bs-link-color: #159b86;
+  --bs-link-color-rgb: 21, 155, 134;
+  --bs-link-hover-color: #0f7a6a;
+  --bs-link-hover-color-rgb: 15, 122, 106;
+}
+
+/* ---------- Base ---------- */
+body.site {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+.site h1,
+.site h2,
+.site h3,
+.site h4 {
+  font-family: var(--font-heading);
+  color: var(--color-navy);
+  margin: 0;
+}
+
+.site p {
+  margin: 0;
+}
+
+.site a {
+  color: var(--color-teal);
+  text-decoration: none;
+}
+
+.site button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.site-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: 46px;
+}
+
+.only-mobile {
+  display: none !important;
+}
+
+.section-eyebrow {
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-teal);
+}
+
+/* ---------- Marca ---------- */
+.brand-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-navy);
+  font-size: 23px;
+}
+
+.brand-logo__accent {
+  color: var(--color-teal);
+}
+
+/* ---------- Botões (antes BaseButton.vue) ---------- */
+.nd-btn {
+  border: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.nd-btn--sm { font-size: 14px; padding: 11px 17px; }
+.nd-btn--md { font-size: 14px; padding: 12px 20px; }
+.nd-btn--lg { font-size: 14.5px; padding: 14px 24px; }
+.nd-btn--xl { font-size: 15px; padding: 15px 26px; }
+
+.nd-btn--block {
+  display: flex;
+  width: 100%;
+}
+
+.nd-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.site .nd-btn--primary {
+  background: var(--color-teal);
+  color: #fff;
+}
+
+.site .nd-btn--outline {
+  background: #fff;
+  color: var(--color-navy);
+  border: 1.5px solid rgba(15, 46, 77, 0.15);
+}
+
+.site .nd-btn--soft {
+  background: var(--color-mint-soft);
+  color: var(--color-navy);
+}
+
+.site .nd-btn--ghost-light {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- Navbar (antes TheNavbar.vue) ---------- */
+.site-header {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px 14px 0;
+  position: relative;
+  z-index: 50;
+}
+
+.site-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 26px;
+  box-shadow: var(--shadow-nav);
+}
+
+.site-nav__left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.site-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.site-nav__services {
+  position: relative;
+}
+
+.site-nav__services-toggle {
+  border: none;
+  background: none;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--color-navy);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 14px 0;
+}
+
+.site .site-nav__link {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--color-navy);
+}
+
+.site-nav__dropdown {
+  position: absolute;
+  top: 100%;
+  padding-top: 12px;
+  z-index: 60;
+  display: none;
+}
+
+.site-nav__services:hover .site-nav__dropdown,
+.site-nav__services:focus-within .site-nav__dropdown {
+  display: block;
+}
+
+.site-nav__dropdown--services {
+  left: -16px;
+}
+
+.services-menu {
+  width: 540px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--shadow-menu);
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.services-menu__item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 13px;
+  align-items: center;
+  color: var(--color-navy);
+}
+
+.services-menu__item:hover {
+  background: var(--color-mint-soft);
+}
+
+.services-menu__icon,
+.login-menu__icon {
+  flex: none;
+  background: var(--color-mint);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-teal);
+}
+
+.services-menu__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+}
+
+.services-menu__title,
+.login-menu__title {
+  display: block;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+
+.services-menu__description,
+.login-menu__description {
+  display: block;
+  font-size: 11.5px;
+  color: var(--color-text-muted);
+}
+
+.site-nav__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.site-nav__login-toggle {
+  background: var(--color-mint-soft);
+  color: var(--color-navy);
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 11px 17px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Dropdown do Bootstrap com a aparência do design. */
+.login-menu.dropdown-menu {
+  width: 264px;
+  border: none;
+  border-radius: 16px;
+  box-shadow: var(--shadow-menu);
+  padding: 8px;
+  margin-top: 12px !important;
+}
+
+.site .login-menu__item {
+  display: flex;
+  gap: 11px;
+  padding: 12px;
+  border-radius: 12px;
+  align-items: center;
+  color: var(--color-navy);
+}
+
+.login-menu__item:hover {
+  background: var(--color-mint-soft);
+}
+
+.login-menu__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+}
+
+.login-menu__icon--emphasis {
+  background: var(--color-teal);
+  color: #fff;
+}
+
+.site-nav__burger {
+  display: none;
+  border: none;
+  background: none;
+  color: var(--color-navy);
+  padding: 0;
+}
+
+.site-nav__mobile-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--shadow-menu);
+  padding: 8px;
+  flex-direction: column;
+  z-index: 60;
+}
+
+.site-nav__mobile-menu.show {
+  display: flex;
+}
+
+.site .site-nav__mobile-menu a {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--color-navy);
+}
+
+.site-nav__mobile-menu a:hover {
+  background: var(--color-mint-soft);
+}
+
+/* ---------- Cabeçalho de página (antes PageHeader.vue) ---------- */
+.page-header {
+  max-width: 560px;
+  margin: 0 auto;
+  padding-top: 44px;
+  text-align: center;
+}
+
+.site .page-header__title {
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+}
+
+.page-header__text {
+  margin-top: 12px !important;
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+/* ---------- Formulário de proposta (antes RequestProposalView.vue) ---------- */
+.proposal,
+.tracking {
+  padding-bottom: 64px;
+}
+
+.proposal__card {
+  max-width: 640px;
+  margin: 30px auto 0;
+  background: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 30px;
+}
+
+.proposal__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-field {
+  display: block;
+}
+
+.form-field__label {
+  display: block;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--color-navy);
+  margin-bottom: 7px;
+}
+
+.form-field__optional {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.form-field__input {
+  width: 100%;
+  border: 1.5px solid rgba(15, 46, 77, 0.15);
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-navy);
+  background: #fff;
+}
+
+.form-field__input:focus {
+  outline: none;
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 3px rgba(21, 155, 134, 0.15);
+}
+
+.form-field__input--error {
+  border-color: var(--color-error);
+}
+
+.form-field__textarea {
+  resize: vertical;
+}
+
+.form-field__error {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-error);
+}
+
+.form-group {
+  margin-top: 20px;
+  border: none;
+  padding: 0;
+}
+
+/* Bootstrap dá float/width ao <legend>; o design quer o rótulo simples. */
+.form-group > legend {
+  float: none;
+  width: auto;
+  line-height: inherit;
+}
+
+.pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill-option {
+  border: 1.5px solid rgba(15, 46, 77, 0.15);
+  border-radius: var(--radius-pill);
+  padding: 9px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-navy);
+  cursor: pointer;
+  user-select: none;
+}
+
+.pill-option--sm {
+  padding: 7px 13px;
+  font-size: 12.5px;
+}
+
+/* Estado ativo sem JS: o input escondido dentro da pílula está marcado. */
+.pill-option:has(input:checked) {
+  background: var(--color-mint);
+  border-color: var(--color-teal);
+  color: var(--color-teal-dark);
+}
+
+.pill-option:has(input:focus-visible) {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+.nd-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.proposal__success {
+  max-width: 560px;
+  margin: 40px auto 0;
+  background: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 42px 34px;
+  text-align: center;
+}
+
+.proposal__success-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--color-mint);
+  color: var(--color-teal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site .proposal__success-title {
+  margin-top: 18px;
+  font-weight: 700;
+  font-size: 26px;
+}
+
+.site .proposal__protocol {
+  margin-top: 14px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  color: var(--color-teal-dark);
+}
+
+.site .proposal__success-text {
+  margin-top: 12px;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.proposal__success-actions {
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* ---------- Consulta (antes RequestTrackingView.vue) ---------- */
+.tracking__card {
+  max-width: 560px;
+  margin: 30px auto 0;
+  background: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 26px;
+}
+
+.tracking__label {
+  display: block;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--color-navy);
+  margin-bottom: 7px;
+}
+
+.tracking__controls {
+  display: flex;
+  gap: 10px;
+}
+
+.tracking__input {
+  flex: 1;
+  min-width: 0;
+  border: 1.5px solid rgba(15, 46, 77, 0.15);
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-navy);
+  text-transform: uppercase;
+}
+
+.tracking__input::placeholder {
+  text-transform: none;
+}
+
+.tracking__input:focus {
+  outline: none;
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 3px rgba(21, 155, 134, 0.15);
+}
+
+.tracking__result {
+  max-width: 560px;
+  margin: 20px auto 0;
+  background: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 28px 26px;
+}
+
+.site .tracking__protocol {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--color-teal-dark);
+}
+
+.site .tracking__detail {
+  margin-top: 7px;
+  font-size: 13.5px;
+}
+
+.tracking__detail strong {
+  color: var(--color-navy);
+}
+
+.site .tracking__closing {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(15, 46, 77, 0.08);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--color-navy);
+  text-align: center;
+}
+
+.site .tracking__not-found {
+  max-width: 560px;
+  margin: 20px auto 0;
+  background: var(--color-mint-soft);
+  border: 1px solid rgba(21, 155, 134, 0.25);
+  border-radius: var(--radius-card);
+  padding: 18px 22px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-navy);
+  text-align: center;
+}
+
+/* ---------- Linha do tempo de status (antes StatusTimeline.vue) ---------- */
+.timeline {
+  display: flex;
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.timeline__step {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
+.timeline__step + .timeline__step::before {
+  content: '';
+  position: absolute;
+  top: 13px;
+  left: calc(-50% + 15px);
+  right: calc(50% + 15px);
+  height: 2.5px;
+  border-radius: 2px;
+  background: rgba(15, 46, 77, 0.12);
+}
+
+.timeline__step--done + .timeline__step--done::before {
+  background: var(--color-teal);
+}
+
+.timeline__dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid rgba(15, 46, 77, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline__step--done .timeline__dot {
+  background: var(--color-teal);
+  border-color: var(--color-teal);
+}
+
+.timeline__label {
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.timeline__date {
+  margin-top: -5px;
+  font-size: 11.5px;
+  color: var(--color-text-muted);
+}
+
+.timeline__step--current .timeline__label {
+  color: var(--color-navy);
+  font-weight: 700;
+}
+
+/* ---------- Mobile (breakpoint 900px) ---------- */
+@media (max-width: 900px) {
+  .site-container {
+    padding-inline: 20px;
+  }
+
+  .only-desktop {
+    display: none !important;
+  }
+
+  .only-mobile {
+    display: revert !important;
+  }
+
+  .site-header {
+    padding: 12px 12px 0;
+  }
+
+  .site-nav {
+    padding: 12px 16px;
+    border-radius: 14px;
+  }
+
+  .site-nav__logo {
+    font-size: 20px;
+  }
+
+  .site-nav__links,
+  .site-nav__cta {
+    display: none;
+  }
+
+  .site-nav__burger {
+    display: inline-flex;
+  }
+
+  .site-nav__login-toggle {
+    font-size: 12.5px;
+    padding: 8px 13px;
+  }
+
+  .site-nav__login-chevron {
+    display: none;
+  }
+
+  .page-header {
+    padding-top: 24px;
+  }
+
+  .site .page-header__title {
+    font-size: 26px;
+  }
+
+  .page-header__text {
+    font-size: 14px;
+  }
+
+  .proposal__card {
+    padding: 22px 18px;
+    margin-top: 20px;
+  }
+
+  .proposal__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proposal__success {
+    padding: 30px 20px;
+  }
+
+  .proposal__success-actions {
+    flex-direction: column;
+  }
+
+  .tracking__card {
+    padding: 20px 16px;
+    margin-top: 20px;
+  }
+
+  .tracking__controls {
+    flex-direction: column;
+  }
+
+  .tracking__result {
+    padding: 22px 16px;
+  }
+}
+
+/* ---------- Selo (antes BaseBadge.vue) ---------- */
+.nd-badge {
+  display: inline-block;
+  background: var(--color-mint);
+  color: var(--color-teal-dark);
+  font-weight: 700;
+  font-size: 12.5px;
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+}
+
+/* ---------- "Disponível em breve" (antes PlatformSoonView.vue) ---------- */
+.soon {
+  padding-top: 56px;
+  padding-bottom: 72px;
+}
+
+.soon__card {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 46px 38px;
+  text-align: center;
+}
+
+.site .soon__title {
+  margin-top: 16px;
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+}
+
+.site .soon__text {
+  margin-top: 12px;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.soon__actions {
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.site .soon__track {
+  margin-top: 22px;
+  font-size: 13.5px;
+}
+
+/* ---------- Chat (antes ChatWidget.vue) ---------- */
+.chat-widget {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 80;
+}
+
+.chat-widget [hidden] {
+  display: none !important;
+}
+
+.chat-widget__label {
+  background: #fff;
+  border: 1px solid rgba(15, 46, 77, 0.1);
+  box-shadow: 0 6px 18px rgba(15, 46, 77, 0.14);
+  border-radius: 14px;
+  padding: 9px 14px;
+  font-weight: 600;
+  font-size: 12.5px;
+  color: var(--color-navy);
+}
+
+.chat-widget__bubble {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  color: #fff;
+  border: none;
+  box-shadow: 0 12px 26px rgba(21, 155, 134, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-widget__bubble span {
+  display: inline-flex;
+}
+
+.chat-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 92px;
+  width: 360px;
+  max-height: min(580px, calc(100vh - 130px));
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: var(--shadow-menu);
+  overflow: hidden;
+}
+
+.chat-panel__header {
+  background: var(--color-navy);
+  color: #fff;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-panel__brand {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.03em;
+}
+
+.chat-panel__brand-accent {
+  color: var(--color-teal);
+}
+
+.chat-panel__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--color-cta-text);
+}
+
+.chat-panel__status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-teal);
+}
+
+.chat-panel__close {
+  border: none;
+  background: none;
+  color: #fff;
+  padding: 4px;
+  display: inline-flex;
+}
+
+.chat-panel__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 180px;
+}
+
+.site .chat-message {
+  max-width: 84%;
+  padding: 9px 13px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.chat-message--bot {
+  align-self: flex-start;
+  background: var(--color-mint-soft);
+  color: var(--color-navy);
+  border-bottom-left-radius: 5px;
+}
+
+.chat-message--user {
+  align-self: flex-end;
+  background: var(--color-teal);
+  color: #fff;
+  border-bottom-right-radius: 5px;
+}
+
+.chat-message--typing {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.chat-message--typing i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  animation: chat-typing 1s infinite;
+}
+
+.chat-message--typing i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.chat-message--typing i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+@keyframes chat-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+.chat-panel__controls {
+  border-top: 1px solid rgba(15, 46, 77, 0.08);
+  padding: 11px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 45%;
+  overflow-y: auto;
+}
+
+.chat-panel__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chat-panel__options:empty {
+  display: none;
+}
+
+.site .chat-option {
+  border: 1.5px solid var(--color-teal);
+  background: #fff;
+  color: var(--color-teal-dark);
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 12.5px;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.chat-option:hover,
+.site .chat-option--selected {
+  background: var(--color-mint);
+}
+
+.site .chat-option--primary {
+  background: var(--color-teal);
+  color: #fff;
+}
+
+.site .chat-option--primary:hover {
+  background: var(--color-teal-dark);
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.chat-input__field {
+  flex: 1;
+  min-width: 0;
+  border: 1.5px solid rgba(15, 46, 77, 0.15);
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: var(--color-navy);
+  resize: none;
+}
+
+.chat-input__field:focus {
+  outline: none;
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 3px rgba(21, 155, 134, 0.15);
+}
+
+.chat-input__send {
+  border: none;
+  background: var(--color-teal);
+  color: #fff;
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .soon {
+    padding-top: 28px;
+    padding-bottom: 44px;
+  }
+
+  .soon__card {
+    padding: 32px 20px;
+  }
+
+  .site .soon__title {
+    font-size: 27px;
+  }
+
+  .soon__actions {
+    flex-direction: column;
+  }
+
+  .nd-badge {
+    font-size: 11px;
+    padding: 5px 11px;
+  }
+
+  .chat-widget {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .chat-widget__label {
+    display: none;
+  }
+
+  .chat-widget__bubble {
+    width: 54px;
+    height: 54px;
+  }
+
+  .chat-panel {
+    right: 16px;
+    left: 16px;
+    width: auto;
+    bottom: 84px;
+    max-height: calc(100vh - 116px);
+  }
+}

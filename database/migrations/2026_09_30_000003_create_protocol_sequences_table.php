@@ -1,0 +1,28 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+/**
+ * Contador dos protocolos (NRD-2026-0001…) por prefixo e ano. Lido com lockForUpdate em
+ * ProtocolGenerator — nunca calcule "maior protocolo + 1".
+ */
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('protocol_sequences', function (Blueprint $table): void {
+            $table->id();
+            $table->string('prefix', 10);
+            $table->unsignedSmallInteger('year');
+            $table->unsignedInteger('last_number')->default(0);
+            $table->unique(['prefix', 'year']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('protocol_sequences');
+    }
+};

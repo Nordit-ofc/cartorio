@@ -1,0 +1,32 @@
+{
+    "name": "nordit — cartorios",
+    "dockerComposeFile": "compose.yaml",
+    "service": "app",
+    "workspaceFolder": "/workspace/cartorios",
+    "shutdownAction": "stopCompose",
+    "overrideCommand": false,
+    "remoteUser": "vscode",
+    "forwardPorts": [8000],
+    "portsAttributes": {
+        "8000": {
+            "label": "Laravel",
+            "onAutoForward": "openBrowser"
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    "postStartCommand": "bash .devcontainer/post-start.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "onecentlin.laravel-blade",
+                "ms-azuretools.vscode-docker",
+                "Anthropic.claude-code"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    }
+}

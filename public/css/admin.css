@@ -1,0 +1,107 @@
+/*
+ * Painel (sysadmin e, no futuro, instituições): Bootstrap 5 puro, só com a paleta nordit
+ * aplicada por variáveis — sem Sass, sem build.
+ */
+:root {
+  --color-navy: #0f2e4d;
+  --color-teal: #159b86;
+  --color-teal-dark: #0f7a6a;
+  --color-mint: #e4f3ef;
+  --color-page: #f4faf8;
+
+  --bs-body-font-family: 'DM Sans', system-ui, sans-serif;
+  --bs-body-bg: var(--color-page);
+  --bs-primary: #159b86;
+  --bs-primary-rgb: 21, 155, 134;
+  --bs-link-color: #0f7a6a;
+  --bs-link-color-rgb: 15, 122, 106;
+  --bs-link-hover-color: #0f2e4d;
+  --bs-link-hover-color-rgb: 15, 46, 77;
+}
+
+h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
+  font-family: 'Poppins', sans-serif;
+  color: var(--color-navy);
+}
+
+.btn-primary {
+  --bs-btn-bg: #159b86;
+  --bs-btn-border-color: #159b86;
+  --bs-btn-hover-bg: #0f7a6a;
+  --bs-btn-hover-border-color: #0f7a6a;
+  --bs-btn-active-bg: #0f7a6a;
+  --bs-btn-active-border-color: #0f7a6a;
+  --bs-btn-disabled-bg: #159b86;
+  --bs-btn-disabled-border-color: #159b86;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: #159b86;
+  box-shadow: 0 0 0 0.2rem rgba(21, 155, 134, 0.2);
+}
+
+.form-check-input:checked {
+  background-color: #159b86;
+  border-color: #159b86;
+}
+
+.page-link {
+  --bs-pagination-color: #0f7a6a;
+  --bs-pagination-active-bg: #159b86;
+  --bs-pagination-active-border-color: #159b86;
+}
+
+.brand-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-navy);
+  text-decoration: none;
+}
+
+.brand-logo__accent {
+  color: var(--color-teal);
+}
+
+.admin-topbar {
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(15, 46, 77, 0.06);
+}
+
+.admin-topbar .nav-link.active {
+  color: var(--color-teal-dark);
+  font-weight: 600;
+}
+
+.status-card--active {
+  outline: 2px solid var(--color-teal);
+}
+
+.proposals-table td {
+  max-width: 260px;
+}
+
+.status-history li + li {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(15, 46, 77, 0.08);
+}
+
+/* Tela de login */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(15, 46, 77, 0.08);
+}
