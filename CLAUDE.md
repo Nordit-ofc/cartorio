@@ -76,6 +76,14 @@ Route (routes/web.php)
 
 `config/nordit.php` define `NORDIT_LEADS_MAIL_TO` (aviso de nova proposta), `NORDIT_WHATSAPP_NUMBER` e `SYSADMIN_*`. Nenhum e-mail, número ou senha real fica no repositório.
 
+## CI e deploy (ADR-007)
+
+- Produção: HostGator compartilhado (cPanel), atrás da Cloudflare. O Laravel fica dentro de `~/public_html` (domínio principal, raiz fixa), e um `.htaccess` na raiz, que existe só no servidor, reescreve para `public/`.
+- `.github/workflows/ci.yml`: `pint --test` + `php artisan test` em push e PR.
+- `.github/workflows/deploy.yml`: com CI verde na `main` (ou manual), faz rsync por SSH e roda `migrate --force`, `RoleSeeder`, `InterestAreaSeeder` e `optimize`. Secrets no environment `production`: `SSH_HOST`, `SSH_PORT`, `SSH_USER`, `SSH_KEY`, `DEPLOY_PATH`.
+- O rsync usa `--delete`. Arquivo novo que só existe no servidor precisa entrar nos `--exclude`, ou será apagado. A conta hospeda outros sites, então nunca mire fora de `DEPLOY_PATH`.
+- O `SysadminSeeder` não roda no deploy: o repositório é público e a senha gerada iria para o log.
+
 ## Processo
 
 - **Spec-Driven Development:** specs em `spec/` (`SPEC-NNN-slug.md`). Antes de implementar, verifique a spec correspondente. Conflito entre pedido e spec deve ser apontado antes de codar. As SPEC-001 a 004 vieram do Vue: o conteúdo vale, e a implementação muda conforme o ADR-005.
@@ -92,4 +100,3 @@ Sem ordem definida; cada item precisa de spec aprovada antes:
 - Home, Como funciona e Dúvidas (SPEC-001/003/004), que substituem o "Disponível em breve".
 - IA no chat.
 - Gestão de instituições e usuários, recuperação de senha e área do cliente.
-- Deploy (host ainda em decisão; a Vercel não roda PHP).

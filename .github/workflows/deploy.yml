@@ -1,0 +1,105 @@
+# Deploy no HostGator por SSH + rsync (ADR-007). Roda quando o CI passa num push na main,
+# ou manualmente em Actions → Deploy → Run workflow.
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://nordit.com.br
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, intl
+          coverage: none
+
+      - name: Instalar dependências de produção
+        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+
+      - name: Configurar SSH
+        id: ssh
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts
+          cat >> ~/.ssh/config <<EOF
+          Host prod
+            HostName $SSH_HOST
+            Port $SSH_PORT
+            User $SSH_USER
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+          EOF
+
+      - name: Entrar em manutenção
+        # "|| true": no primeiro deploy (ou com a app quebrada) o down pode falhar.
+        run: ssh prod "cd '$DEPLOY_PATH' && php -v | head -1 && (php artisan down --retry=15 || true)"
+
+      # O public_html também guarda arquivos que só existem no servidor (.env, .htaccess que
+      # reescreve para public/, cgi-bin, error_log do cPanel…). Excluídos, o --delete não os toca.
+      - name: Enviar arquivos
+        run: |
+          rsync -az --delete \
+            --exclude=/.git/ \
+            --exclude=/.github/ \
+            --exclude=/.devcontainer/ \
+            --exclude=/docs/ \
+            --exclude=/spec/ \
+            --exclude=/tests/ \
+            --exclude=/workspace/ \
+            --exclude=/storage/ \
+            --exclude=/public/storage \
+            --exclude=/.env \
+            --exclude=/.env.* \
+            --exclude=/.htaccess \
+            --exclude=/.user.ini \
+            --exclude=/php.ini \
+            --exclude=/cgi-bin/ \
+            --exclude=/.well-known/ \
+            --exclude=/app-ads.txt \
+            --exclude=/composer \
+            --exclude=error_log \
+            ./ "prod:$DEPLOY_PATH/"
+
+      - name: Migrar, semear e otimizar
+        run: |
+          ssh prod "set -e
+          cd '$DEPLOY_PATH'
+          php artisan migrate --force
+          php artisan db:seed --class=RoleSeeder --force
+          php artisan db:seed --class=InterestAreaSeeder --force
+          php artisan optimize
+          find app bootstrap config database public resources routes vendor -type d -exec chmod 755 {} +
+          find app bootstrap config database public resources routes vendor -type f -exec chmod 644 {} +
+          chmod -R u=rwX,g=rwX,o=rX storage bootstrap/cache"
+
+      - name: Sair da manutenção
+        if: always() && steps.ssh.outcome == 'success'
+        run: ssh prod "cd '$DEPLOY_PATH' && php artisan up"

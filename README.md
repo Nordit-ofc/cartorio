@@ -69,6 +69,10 @@ public/css, public/js  # CSS e JS sem build
 resources/views/     # layouts/, site/, admin/, auth/, partials/, components/
 ```
 
+## Deploy
+
+Push na `main` com o CI verde publica o site no HostGator via GitHub Actions. Também dá para publicar manualmente em Actions → Deploy → Run workflow. Detalhes e secrets necessários no [ADR-007](docs/adr/ADR-007-deploy-hostgator-github-actions.md).
+
 ## Documentação
 
 - `spec/`: especificações (Spec-Driven Development).
