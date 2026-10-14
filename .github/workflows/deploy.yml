@@ -60,7 +60,8 @@ jobs:
 
       # O composer.lock exige PHP 8.4.1+. Com o servidor abaixo disso, o vendor novo derrubaria o site.
       - name: Conferir PHP do servidor
-        run: ssh prod "cd '$DEPLOY_PATH' && php -v | head -1 && php -r 'exit(version_compare(PHP_VERSION, \"8.4.1\", \"<\") ? 1 : 0);'"
+        run: |
+          ssh prod "cd '$DEPLOY_PATH' && php -v | head -1 && php -r 'exit(version_compare(PHP_VERSION, \"8.4.1\", \"<\") ? 1 : 0);'"
 
       - name: Entrar em manutenção
         # "|| true": no primeiro deploy (ou com a app quebrada) o down pode falhar.
