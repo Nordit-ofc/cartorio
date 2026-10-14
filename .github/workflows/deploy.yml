@@ -46,8 +46,10 @@ jobs:
         id: ssh
         run: |
           install -m 700 -d ~/.ssh
-          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          # tr: chave colada no Windows pode vir com CRLF, que o OpenSSH não lê.
+          printf '%s\n' "$SSH_KEY" | tr -d '\r' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null || { echo "::error::SSH_KEY inválida: use a chave privada OpenSSH completa, sem passphrase."; exit 1; }
           ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts
           cat >> ~/.ssh/config <<EOF
           Host prod
