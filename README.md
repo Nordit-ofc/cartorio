@@ -29,7 +29,7 @@ Abra a pasta no VS Code e escolha "Reopen in Container". O ambiente sobe PHP 8.4
 
 ### Sem Docker
 
-Requer PHP 8.3+ com as extensões `pdo_mysql` (ou `pdo_sqlite`), `mbstring`, `intl`, `fileinfo`, `openssl` e `zip`, além do Composer.
+Requer PHP 8.4+ com as extensões `pdo_mysql` (ou `pdo_sqlite`), `mbstring`, `intl`, `fileinfo`, `openssl` e `zip`, além do Composer.
 
 ```bash
 composer install

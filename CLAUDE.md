@@ -18,7 +18,7 @@ Estado atual:
 
 ## Stack
 
-Laravel 13 (PHP 8.3+), Blade, **Bootstrap 5.3 via CDN**, JavaScript puro em `public/js`, MySQL 8 (SQLite nos testes) e `spatie/laravel-permission`. **Sem Node**: não há `package.json`, Vite nem `@vite` nas views, e não se deve reintroduzi-los.
+Laravel 13 (PHP 8.4+), Blade, **Bootstrap 5.3 via CDN**, JavaScript puro em `public/js`, MySQL 8 (SQLite nos testes) e `spatie/laravel-permission`. **Sem Node**: não há `package.json`, Vite nem `@vite` nas views, e não se deve reintroduzi-los.
 
 ## Comandos
 

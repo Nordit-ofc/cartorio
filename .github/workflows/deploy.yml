@@ -35,7 +35,7 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: mbstring, intl
           coverage: none
 
@@ -58,9 +58,13 @@ jobs:
             IdentitiesOnly yes
           EOF
 
+      # O composer.lock exige PHP 8.4.1+. Com o servidor abaixo disso, o vendor novo derrubaria o site.
+      - name: Conferir PHP do servidor
+        run: ssh prod "cd '$DEPLOY_PATH' && php -v | head -1 && php -r 'exit(version_compare(PHP_VERSION, \"8.4.1\", \"<\") ? 1 : 0);'"
+
       - name: Entrar em manutenção
         # "|| true": no primeiro deploy (ou com a app quebrada) o down pode falhar.
-        run: ssh prod "cd '$DEPLOY_PATH' && php -v | head -1 && (php artisan down --retry=15 || true)"
+        run: ssh prod "cd '$DEPLOY_PATH' && (php artisan down --retry=15 || true)"
 
       # O public_html também guarda arquivos que só existem no servidor (.env, .htaccess que
       # reescreve para public/, cgi-bin, error_log do cPanel…). Excluídos, o --delete não os toca.

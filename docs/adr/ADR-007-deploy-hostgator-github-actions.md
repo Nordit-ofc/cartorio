@@ -6,7 +6,7 @@
 
 ## Contexto
 
-O ADR-005 deixou o host em aberto: a Vercel não roda PHP. O site já está publicado em nordit.com.br numa hospedagem compartilhada do **HostGator** (cPanel, PHP 8.3, MySQL, acesso SSH em `jailshell`), atrás da Cloudflare. A publicação foi manual e o repositório não tinha CI.
+O ADR-005 deixou o host em aberto: a Vercel não roda PHP. O site já está publicado em nordit.com.br numa hospedagem compartilhada do **HostGator** (cPanel, MySQL, acesso SSH em `jailshell`), atrás da Cloudflare. A publicação foi manual e o repositório não tinha CI. O servidor estava em PHP 8.3, mas o `composer.lock` (gerado no devcontainer, PHP 8.4) traz Symfony 8.1, que exige PHP 8.4.1 ou superior.
 
 Particularidades do servidor:
 
@@ -16,7 +16,8 @@ Particularidades do servidor:
 
 ## Decisão
 
-- **CI** (`.github/workflows/ci.yml`) em todo push e pull request: `pint --test` e `php artisan test` (SQLite em memória), com PHP 8.3.
+- **CI** (`.github/workflows/ci.yml`) em todo push e pull request: `pint --test` e `php artisan test` (SQLite em memória), com PHP 8.4.
+- **PHP 8.4 em produção:** o domínio usa PHP 8.4 no MultiPHP Manager do cPanel, a mesma versão do devcontainer. O deploy confere a versão do PHP no servidor e para antes de tocar no site se ela for menor que 8.4.1.
 - **Deploy** (`.github/workflows/deploy.yml`) quando o CI passa num push na `main`, ou manualmente (`workflow_dispatch`), no environment `production` do GitHub:
   1. `composer install --no-dev` no runner (o servidor não precisa de Composer).
   2. `php artisan down`, envio por **rsync via SSH** para `DEPLOY_PATH` e, no servidor, `migrate --force`, os seeders idempotentes `RoleSeeder` e `InterestAreaSeeder`, `optimize` e `up`.
